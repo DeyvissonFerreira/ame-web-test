@@ -25,7 +25,6 @@
 - cucumber-java 1.2.5
 - cucumber-jvm-deps 1.0.5
 - cucumber-testng 1.2.5
-- cucumber-reporting 3.8.0
 - Selenium-java 3.141.59
 - testng 6.9.8
 - maven-compiler-plugin 3.1
