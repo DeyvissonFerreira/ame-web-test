@@ -3,9 +3,12 @@ package setup;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.util.function.Function;
 
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -13,10 +16,20 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
+import io.qameta.allure.Allure;
+
 public class Suporte {
 	
+	public void anexaDescricao(String message){
+		Allure.addAttachment(message, "");
+	}
 	
-	protected void acoesTeclado(Keys... keys) {
+	public void anexaEvidencia(String casoDeTeste) {
+		Allure.addAttachment(casoDeTeste,
+				new ByteArrayInputStream(((TakesScreenshot) Capabilities.getDriver()).getScreenshotAs(OutputType.BYTES)));
+	}
+	
+		protected void acoesTeclado(Keys... keys) {
 		for (Keys key : keys) {
 			new Actions(Capabilities.getDriver()).sendKeys(key).build().perform();
 		}
@@ -49,6 +62,7 @@ public class Suporte {
 	 * @param elemento
 	 */
 	protected void click(WebElement elemento) {
+		anexaDescricao("Clicando no elemento: " + elemento);
 		aguardaElemento(ExpectedConditions.elementToBeClickable(elemento)).click();
 	}
 	
@@ -58,6 +72,7 @@ public class Suporte {
 	 * @param elemento
 	 */
 	protected void limparCampo(WebElement elemento) {
+		anexaDescricao("Limpando no elemento: " + elemento);
 		aguardaElemento(ExpectedConditions.elementToBeClickable(elemento)).clear();
 	}
 
@@ -68,6 +83,7 @@ public class Suporte {
 	 * @param valor
 	 */
 	protected void preencheCampo(WebElement elemento, String valor) {
+		anexaDescricao("Preenchendo o elemento: " + elemento + " Com o valor: ".concat(valor));
 		aguardaElemento(ExpectedConditions.elementToBeClickable(elemento)).sendKeys(valor);
 	}
 	
@@ -77,6 +93,7 @@ public class Suporte {
 	 * @param texto
 	 */
 	protected void selecionarComboBoxText(WebElement elemento, String texto) {
+		anexaDescricao("Selecionando o texto: ".concat(texto).concat(" no elemento: ") + elemento);
 		new Select(elemento).selectByVisibleText(texto);
 	}
 	
@@ -86,6 +103,7 @@ public class Suporte {
 	 * @param value
 	 */
 	protected void selecionarComboBoxValue(WebElement elemento, String value) {
+		anexaDescricao("Selecionando o valor: ".concat(value).concat(" no elemento: ") + elemento);
 		new Select(elemento).selectByValue(value);
 	}
 	
@@ -96,23 +114,13 @@ public class Suporte {
 	 */
 	protected void verificacao(WebElement elemento, String check) {
 		aguardaElemento(ExpectedConditions.visibilityOf(elemento));
-		System.out.println("\nVALIDACAO -> ".concat(elemento.getText()).concat(" Igual a ").concat(check));
+		anexaDescricao("VALIDACAO -> ".concat(elemento.getText()).concat(" Igual a ").concat(check));
 		assertTrue(elemento.getText().equalsIgnoreCase(check));
 	}
 	
 	protected void verificacao(WebElement elemento, String atributo, String check) {
 		aguardaElemento(ExpectedConditions.visibilityOf(elemento));
-		System.out.println("\nVALIDACAO -> ".concat(elemento.getAttribute(atributo)).concat(" Igual a ").concat(check));
+		anexaDescricao("VALIDACAO -> ".concat(elemento.getAttribute(atributo)).concat(" Igual a ").concat(check));
 		assertEquals(elemento.getAttribute(atributo), check);
-	}
-	
-	/**
-	 * Retirar do locator caracters indesejados para apresentacao
-	 * 
-	 * @param elemento - locator
-	 */
-	protected String obterSeletor(WebElement elemento) {
-		String el = elemento.toString().replaceAll("\\S+: \\S+ on \\S+ (\\S+) -> \\S+ \\S+ ", "");
-		return el.substring(0, el.length() - 1);
 	}
 }

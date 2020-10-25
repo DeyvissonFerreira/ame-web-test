@@ -13,13 +13,10 @@ import setup.Capabilities;
 @CucumberOptions(
 		features = "src/test/resources/features", 
 		glue = { "stepdefs" }, 
-		tags = { "~@Ignore" }, 
+		tags = { "~@Ignore" }
+		, 
 		format = {
-				"pretty", 
-				"html:target/cucumber-reports/cucumber-pretty",
-				"json:target/cucumber-reports/json-reports/CucumberTestReport.json",
-				"rerun:target/cucumber-reports/rerun-reports/rerun.txt" 
-		})
+				"pretty",})
 public class TestRunner extends Capabilities{
 
 	private TestNGCucumberRunner testNGCucumberRunner;

@@ -23,3 +23,4 @@
 .settings/
 target/
 test-output
+allure-results

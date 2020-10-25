@@ -138,14 +138,17 @@ public class HelpLogin extends Suporte{
 		if (casoTeste.contains("Sucesso")) {
 			aguardaElemento(ExpectedConditions.visibilityOf(pg.WELCOME_MESSAGE));
 			verificacao(pg.WELCOME_MESSAGE, mensagem);
+			anexaEvidencia(casoTeste);
 			sairAplicacao();
 		}else {
 			aguardaElemento(ExpectedConditions.visibilityOf(pg.ALERT_MESSAGE));
 			verificacao(pg.ALERT_MESSAGE, mensagem);
+			anexaEvidencia(casoTeste);
 		}
 	}
 	
 	public void preCondicaoCadastroCliente(Cliente cliente) {
+		anexaDescricao("| INÍCIO DA PRÉ-CONDICAÇÃO - CADASTRO DO CLIENTE |");
 		acessaTelaLogin();
 		preencherEmailRegistro(cliente.email);
 		acionarCreateAccount();
@@ -165,5 +168,7 @@ public class HelpLogin extends Suporte{
 		acionarRegister();
 		aguardaElemento(ExpectedConditions.visibilityOf(pg.LOGO_TELA_INICIAL));
 		sairAplicacao();
+		
+		anexaDescricao("| FIM DA PRÉ-CONDICAÇÃO - CADASTRO DO CLIENTE |");
 	}
 }
